@@ -56,6 +56,11 @@ int main(int argc, char* argv[])
 					scene++;
 					scene = scene % 2;
 				}
+				if (e.key.keysym.sym == SDLK_DOWN)
+				{
+					scene--;
+					scene = scene % 2;
+				}
 			}
 		}
 
