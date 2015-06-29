@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 				}
 				if (e.key.keysym.sym == SDLK_DOWN)
 				{
-					scene--;
+					scene++;
 					scene = scene % 2;
 				}
 			}
@@ -68,38 +68,43 @@ int main(int argc, char* argv[])
 		SDL_LockSurface(surface);
 		myRenderer.Clear();
 
-		// DRAW HERE
 		int x, y;
 		u32 mouseState = SDL_GetMouseState(&x, &y);
+		if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) mouseDown = true;
+
+		Color* color;
+		if (mouseDown)
+		{
+			color = new Color(1.0f, 1.0f, 1.0f);
+		}
+		else
+		{
+			color = new Color(1.0f, 0.0f, 0.0f);
+		}
 
 		// Mouse Tether
 		if (scene == 0)
 		{
-			if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
-				myRenderer.DrawLine(Color(1.0f, 1.0f, 1.0f), x, y, 400, 300);
+			if (mouseDown)
+				myRenderer.DrawLine(*color, x, y, 400, 300);
 			else
-				myRenderer.DrawLine(Color(1.0f, 0.0f, 0.0f), x, y, 400, 300);
+				myRenderer.DrawLine(*color, x, y, 400, 300);
 		}
 		// Draw Grid
 		else if (scene == 1)
 		{
 			for (int x = 0; x < 800; x = x + 10)
 			{
-				myRenderer.DrawLine(Color(1.0f, 1.0f, 1.0f), x, 0, x, 599);
+				myRenderer.DrawLine(*color, x, 0, x, 599);
 			}
 			for (int y = 0; y < 600; y += 10)
 			{
-				myRenderer.DrawLine(Color(1.0f, 1.0f, 1.0f), 0, y, 799, y);
+				myRenderer.DrawLine(*color, 0, y, 799, y);
 			}
 		}
-		
-
-		
-
-
-
 		SDL_UnlockSurface(surface);
 		SDL_UpdateWindowSurface(window);
+		mouseDown = false;
 	}
 
 	return 0;
